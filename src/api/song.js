@@ -11,7 +11,7 @@ export function getLyric(mid) {
     platform: 'yqq',
     hostUin: 0,
     needNewCode: 0,
-    g_tk: 2001751543,
+    g_tk: 5381,
     format: 'json'
   })
 
@@ -29,7 +29,7 @@ export function getSongVkey(musicid, filename, guid) {
   let url = 'api/getSongVkey'
   let data = {
     songmid: musicid,
-    g_tk: 2001751543,
+    g_tk: 5381,
     loginUin: 0,
     hostUin: 0,
     platform: 'yqq',

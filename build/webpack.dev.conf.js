@@ -66,6 +66,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       })
+      app.get('/api/getSongList', function (req, res) {
+        let url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://y.qq.com/n/yqq/playsquare/843867868.html',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
       // app.get('/api/getSongVkey', (req, res) => { 其他方法代替
       //   let url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg'
       //   axios.get(url, {
