@@ -156,7 +156,7 @@ export default {
     .back
       position: absolute
       top: 0
-      left: 6
+      left: 6px
       z-index: 50
       .icon-back
         display: block

@@ -3,7 +3,9 @@
           class="suggest"
           :data="result"
           :pullUp="pullUp"
+          :boforeScroll="beforeScroll"
           @scrollToEnd="searchMore"
+          @beforeScroll="listScroll"
   >
     <ul class="suggest-list">
         <li @click="selectItem(item)" class="suggest-item" v-for="(item,index) in result" :key="index">
@@ -16,6 +18,9 @@
         </li>
         <loading v-show="hasMore"></loading>
     </ul>
+    <div v-show="!hasMore && !result.length" class="no-result-wrapper">
+      <no-result title="抱歉，暂无搜索结果"></no-result>
+    </div>
   </scroll>
 </template>
 
@@ -26,7 +31,8 @@ import {createSong} from 'common/js/song'
 import Scroll from 'base/scroll/scroll'
 import Loading from 'base/loading/loading'
 import Singer from 'common/js/singer'
-import {mapMutations} from 'vuex'
+import {mapMutations, mapActions} from 'vuex'
+import NoResult from 'base/no-result/no-result'
 
 const TYPE_SINGER = 'singer'
 const PERPAGE = 20
@@ -47,6 +53,7 @@ export default {
       page: 1,
       result: [],
       pullUp: true,
+      beforeScroll: true,
       hasMore: true
     }
   },
@@ -97,7 +104,16 @@ export default {
           path: `/search/${singer.id}`
         })
         this.setSinger(singer)
+      } else {
+        this.insertSong(item)
       }
+      this.$emit('select', item)
+    },
+    listScroll() {
+      this.$emit('listScroll')
+    },
+    refresh() {
+      this.$refs.suggest.refresh()
     },
     _checkMore(data) { // 检查是否有更多
       const song = data.song
@@ -126,7 +142,10 @@ export default {
     },
     ...mapMutations({
       setSinger: 'SET_SINGER'
-    })
+    }),
+    ...mapActions([
+      'insertSong'
+    ])
   },
   watch: {
     query(newQuery) {
@@ -135,7 +154,8 @@ export default {
   },
   components: {
     Scroll,
-    Loading
+    Loading,
+    NoResult
   }
 }
 </script>

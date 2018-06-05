@@ -32,6 +32,14 @@ export default {
     pullDown: {
       type: Boolean,
       default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
+    },
+    refreshDelay: {
+      type: Number,
+      default: 20
     }
   },
   mounted() {
@@ -71,6 +79,12 @@ export default {
           }
         })
       }
+
+      if (this.beforeScroll) {
+        this.scroll.on('boforeScrollStart', () => {
+          this.$emit('beforeScroll')
+        })
+      }
     },
     ebable() {
       this.scroll && this.scroll.enable()
@@ -92,7 +106,7 @@ export default {
     data() {
       setTimeout(() => {
         this.refresh()
-      }, 20)
+      }, this.refreshDelay)
     }
   }
 }
